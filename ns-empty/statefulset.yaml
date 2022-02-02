@@ -1,0 +1,28 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: demo
+  name: demo
+spec:
+  ports:
+    - name: demo
+      port: 9090
+      protocol: TCP
+      targetPort: 9090
+  selector:
+    app: demo
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: demo
+  labels:
+    app.kubernetes.io/name: demo
+spec:
+  podManagementPolicy: Parallel
+  replicas: 2
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: demo
+  serviceName: demo
